@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>bunny land</title>
+  <meta name="description" content="a tiny world for Chicken Nugget" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/hub.css" />
+</head>
+<body class="hub-body">
+  <div id="hub-stars" class="hub-stars" aria-hidden="true"></div>
+
+  <a id="hub-back" class="back-btn hub-back" href="ask.html">← back</a>
+
+  <div class="scroller">
+    <main class="hub hub-page">
+      <h1 class="hub-greeting">made just for you</h1>
+
+      <div class="gifts">
+        <button class="gift gift--cookie" data-gift="cookie" aria-label="gift one">
+          <span class="gift-box"></span>
+          <span class="gift-bow" aria-hidden="true">🎀</span>
+        </button>
+        <button class="gift gift--note" data-gift="note" aria-label="gift two">
+          <span class="gift-box"></span>
+          <span class="gift-bow" aria-hidden="true">🎀</span>
+        </button>
+        <button class="gift gift--fw" data-gift="fireworks" aria-label="gift three">
+          <span class="gift-box"></span>
+          <span class="gift-bow" aria-hidden="true">🎀</span>
+        </button>
+        <button class="gift gift--tulip" data-gift="tulip" aria-label="gift four">
+          <span class="gift-box"></span>
+          <span class="gift-bow" aria-hidden="true">🎀</span>
+        </button>
+      </div>
+
+      <!-- easter egg: a little scroll cue down to a hidden video -->
+      <button id="scroll-down" class="scroll-cue" aria-label="scroll down for a little surprise">˅</button>
+    </main>
+
+    <section class="video-page">
+      <button id="scroll-up" class="scroll-cue scroll-cue--up" aria-label="scroll back up to your gifts">˄</button>
+      <div class="video-frame">
+        <iframe
+          src="https://www.youtube.com/embed/Dlb7Z2LTj1I"
+          title="a little something"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
+    </section>
+  </div>
+
+  <!-- enlarged gift scene -->
+  <section id="gift-scene" class="gift-scene" aria-hidden="true" aria-label="a little surprise">
+    <div class="hub-stars" aria-hidden="true"></div>
+    <button id="scene-back" class="back-btn">← back</button>
+    <div id="scene-stage" class="scene-stage"></div>
+    <p id="scene-line" class="scene-line"></p>
+  </section>
+
+  <!-- the note from you (gift two) -->
+  <div id="note" class="note-overlay" aria-hidden="true">
+    <div class="note-card" role="dialog" aria-modal="true" aria-label="a note for you">
+      <button id="note-close" class="note-close" aria-label="close">✕</button>
+      <p class="note-text">i hope you always remember how wonderful you are,</p>
+      <p class="note-text">i pray that Allah always keeps you happy, gives you peace, and surrounds you with people who appreciate you for who you truly are,</p>
+      <p class="note-text">never let anyone make you feel like the things that bring you joy are silly or too much, never let anyone yuck your yum, because the little things that make you smile are a part of what makes you special,</p>
+      <p class="note-text">i cant wait to get to know you more, to learn about the things you love, the things that make you laugh, your little habits, and all the small things that make you who you are,</p>
+      <p class="note-text">i hope life is always gentle with you, and i hope you always know that you deserve happiness</p>
+      <p class="note-sign">— abd</p>
+    </div>
+  </div>
+
+  <div id="fade" class="fade on" aria-hidden="true"></div>
+
+  <script src="js/stars.js"></script>
+  <script src="js/hub.js"></script>
+  <script>
+    (function () {
+      var f = document.getElementById("fade");
+      requestAnimationFrame(function () { if (f) f.classList.remove("on"); });
+    })();
+  </script>
+</body>
+</html>

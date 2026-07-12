@@ -1,0 +1,222 @@
+/* ============================================================
+   landing.css — iOS-style passcode lock screen + tulip transition
+   ============================================================ */
+
+.landing {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  background: #c9bce4;
+  overflow: hidden;
+}
+
+/* ---------- blurred photo background ---------- */
+.landing::before {
+  content: "";
+  position: fixed;
+  inset: -6%;
+  z-index: 0;
+  background: url("../backgroundjpg.jpg") center center / cover no-repeat;
+  filter: blur(10.24px) saturate(1.06) brightness(0.99);
+  transform: scale(1.12);
+  pointer-events: none;
+}
+
+/* ---------- drifting wallpaper blobs ---------- */
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  filter: blur(40px);
+}
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.28;
+  mix-blend-mode: screen;
+}
+.blob-1 {
+  width: 60vmin; height: 60vmin;
+  left: -10vmin; top: -8vmin;
+  background: radial-gradient(circle, #ff9ecb, transparent 68%);
+  animation: blob-float 18s ease-in-out infinite;
+}
+.blob-2 {
+  width: 55vmin; height: 55vmin;
+  right: -12vmin; top: 10vmin;
+  background: radial-gradient(circle, #8fb6ff, transparent 68%);
+  animation: blob-float 22s ease-in-out infinite reverse;
+}
+.blob-3 {
+  width: 48vmin; height: 48vmin;
+  left: 30vmin; bottom: -16vmin;
+  background: radial-gradient(circle, #c9a8ff, transparent 68%);
+  animation: blob-float 26s ease-in-out infinite;
+}
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6vmin, -5vmin) scale(1.08); }
+  66% { transform: translate(-5vmin, 4vmin) scale(0.95); }
+}
+
+/* ---------- lock column ---------- */
+.lock {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.6rem;
+  padding: 2rem 1rem;
+  animation: lock-in 0.8s var(--ease-soft) both;
+}
+@keyframes lock-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- glass panel around keypad ---------- */
+.lock-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.9rem;
+  padding: 2.4rem 2rem 2.7rem;
+  border-radius: 36px;
+  background: linear-gradient(180deg, rgba(126, 42, 82, 0.5), rgba(96, 28, 64, 0.58));
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.32),
+    inset 0 -10px 26px rgba(50, 10, 34, 0.18),
+    0 24px 56px -22px rgba(70, 18, 48, 0.72);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  backdrop-filter: blur(24px) saturate(1.4);
+}
+
+/* ---------- lock title ---------- */
+.lock-title {
+  margin: 0.2rem 0 0.1rem;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.94);
+  text-shadow: 0 1px 6px rgba(70, 18, 48, 0.4);
+}
+
+/* ---------- passcode dots ---------- */
+.dots {
+  display: flex;
+  gap: 1.35rem;
+}
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.8px solid rgba(255, 255, 255, 0.9);
+  background: transparent;
+  box-shadow: 0 1px 4px rgba(90, 60, 120, 0.18);
+  transition: background 0.18s var(--ease-soft), transform 0.18s var(--ease-soft);
+}
+.dot.filled {
+  background: #fff;
+  transform: scale(1.08);
+}
+.dots.shake {
+  animation: shake 0.5s;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-9px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(3px); }
+}
+
+/* ---------- glass keypad ---------- */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 76px);
+  gap: 1.15rem;
+}
+.key {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: 50%;
+  color: #fff;
+  /* frosted iOS glass */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.1));
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 209, 229, 0.55),
+    inset 0 -4px 12px rgba(255, 255, 255, 0.06),
+    0 8px 20px -8px rgba(70, 60, 120, 0.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  transition: transform 0.12s var(--ease-soft), background 0.15s, box-shadow 0.15s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.key .num {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 2rem;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(80, 60, 120, 0.25);
+}
+.key .sub {
+  display: none;
+}
+.key:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.2));
+}
+.key.pressed,
+.key:active {
+  transform: scale(0.93);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.32));
+}
+.key--empty {
+  background: none;
+  border: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+.key--action {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
+  border-color: rgba(255, 255, 255, 0.32);
+}
+.key--action svg {
+  width: 28px;
+  height: 22px;
+}
+.key--action[hidden] { visibility: hidden; pointer-events: none; }
+
+
+/* ---------- pink veil transition (bridges into meadow bunny-rain) ---------- */
+.transition {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  background: linear-gradient(160deg, #ffd7e8 0%, #f6d3e6 45%, #e9d4f2 100%);
+}
+.transition.active {
+  visibility: visible;
+  animation: veil-in 0.42s ease forwards;
+}
+@keyframes veil-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

@@ -1,0 +1,204 @@
+/* ============================================================
+   base.css — shared tokens, reset, paper texture, helpers
+   "Her Little Meadow by the Sea"
+   ============================================================ */
+
+:root {
+  /* palette */
+  --paper: #fbf8f1;
+  --paper-deep: #f3ecdd;
+  --ink: #2e3550;
+  --ink-soft: #55608a;
+  --blue: #3a5ba0;
+  --blue-soft: #6e8fd1;
+  --blue-pale: #aec4e8;
+  --blush: #e8a0a8;
+  --blush-soft: #f4c7cc;
+  --leaf: #7ba05b;
+  --leaf-soft: #a6c489;
+  --gold: #f5e6a8;
+  --night-1: #1b2140;
+  --night-2: #2a3160;
+
+  /* type */
+  --font-hand: "Caveat", "Segoe Script", "Comic Sans MS", cursive;
+  --font-body: "Nunito", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-pixel: "Pixelify Sans", "Trebuchet MS", system-ui, sans-serif;
+
+  /* motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background-color: var(--paper);
+  /* subtle paper grain via layered gradients (no image needed) */
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(174, 196, 232, 0.12), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(232, 160, 168, 0.1), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(46, 53, 80, 0.015) 0 1px, transparent 1px 3px);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+/* accessibility helper */
+.visually-hidden,
+.visually-hidden * {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue-soft);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* floating specks of dust — shared ambient */
+.specks {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.speck {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(174, 196, 232, 0.35));
+  opacity: 0;
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  0% { transform: translateY(20px) translateX(0) scale(0.6); opacity: 0; }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-110vh) translateX(30px) scale(1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .speck { display: none; }
+}
+
+/* ---------- bunny rain transition (shared) ---------- */
+.bunny-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  overflow: hidden;
+  pointer-events: none;
+}
+/* soft pink veil hides the page beneath until the pile drops away */
+.bunny-rain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #ffd7e8 0%, #f6d3e6 45%, #e9d4f2 100%);
+  opacity: 1;
+}
+.bunny-rain.dropping::before {
+  animation: veil-out 0.85s 0.15s var(--ease-in-out) both;
+}
+.bunny-rain.clearing::before {
+  animation: veil-out 0.45s ease both;
+}
+@keyframes veil-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* individual bunnies — positions/rotation driven by JS physics */
+.rb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+.rb img,
+.rb svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* ---------- shared twinkling starry background ---------- */
+.hub-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.hub-star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: twinkle 3s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hub-star { animation: none !important; }
+}
+
+/* ---------- shared blurred photo background (every page but the passcode) ---------- */
+.ask-body::before,
+.hub-body::before {
+  content: "";
+  position: fixed;
+  inset: -6%;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(20, 16, 44, 0.4), rgba(20, 16, 44, 0.58)),
+    url("../homepage.jpg") center center / cover no-repeat;
+  filter: blur(10px) saturate(1.05);
+  transform: scale(1.12);
+  pointer-events: none;
+}

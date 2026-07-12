@@ -1,0 +1,452 @@
+/* ============================================================
+   hub.css — "Bunny Land" gift hub (pixel-font, cozy dusk)
+   ============================================================ */
+.hub-body {
+  min-height: 100dvh;
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-pixel);
+  color: #fff;
+  background: #241f4a;
+}
+
+/* two "pages" you can scroll between: the gifts, and a hidden video below */
+.scroller {
+  position: relative;
+  z-index: 2;
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+.hub-page,
+.video-page {
+  min-height: 100dvh;
+  scroll-snap-align: start;
+}
+.video-page {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* scroll cue arrows (the easter egg) */
+.scroll-cue {
+  border: none;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  animation: cue-bounce 2.2s ease-in-out infinite;
+}
+.scroll-cue:hover { background: rgba(255, 255, 255, 0.26); }
+.scroll-cue--up {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0;
+}
+@keyframes cue-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+.scroll-cue--up { animation-name: cue-bounce-up; }
+@keyframes cue-bounce-up {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+/* big youtube embed on the hidden second page */
+.video-frame {
+  width: min(900px, 92vw);
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 20px 44px -18px rgba(10, 8, 30, 0.6);
+}
+.video-frame iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* ---------- hub layout ---------- */
+.hub {
+  position: relative;
+  z-index: 2;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  padding: 2rem 1rem 3rem;
+  text-align: center;
+}
+.hub-greeting {
+  font-size: clamp(1.9rem, 6vw, 3.4rem);
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 3px 0 rgba(60, 40, 90, 0.35);
+}
+.hub-greeting span { display: inline-block; animation: hb 2.4s ease-in-out infinite; }
+@keyframes hb { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.hub-sub {
+  font-size: clamp(0.95rem, 2.6vw, 1.25rem);
+  margin: 0 0 0.6rem;
+  opacity: 0.92;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- gifts ---------- */
+.gifts {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: clamp(1rem, 4vw, 2.2rem);
+  justify-content: center;
+  margin-top: 0.6rem;
+}
+.gift {
+  position: relative;
+  width: clamp(110px, 26vw, 150px);
+  height: clamp(110px, 26vw, 150px);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: var(--font-pixel);
+  color: #fff;
+  transition: transform 0.18s ease, filter 0.18s ease;
+  filter: drop-shadow(0 10px 16px rgba(30, 20, 60, 0.45));
+}
+.gift:hover { transform: translateY(-8px) scale(1.04); }
+.gift:active { transform: translateY(-2px) scale(0.99); }
+.gift-box {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff8ec;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 78%;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 0 0 5px rgba(0, 0, 0, 0.06);
+}
+/* bow sits in the corner instead of top-center */
+.gift-bow {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  left: auto;
+  transform: rotate(18deg);
+  font-size: 1.6rem;
+  z-index: 3;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.2));
+}
+.gift-num {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  color: #4a3a2a;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+.gift--cookie .gift-box { background-image: url("../assets/scenes/cookie.png"); }
+.gift--note   .gift-box { background-image: url("../assets/scenes/letter.png"); }
+.gift--fw     .gift-box { background-image: url("../assets/scenes/firework.png"); background-size: 140%; background-position: center 155%; }
+.gift--tulip  .gift-box { background-image: url("../assets/scenes/blueflower.png"); background-size: 90%;}
+
+/* moon / fireworks button */
+.moon-btn {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 20;
+  width: 58px;
+  height: 58px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.7rem;
+  color: #fff;
+  background: radial-gradient(circle at 40% 35%, #fff4c9, #f2d98a 60%, #d9b45f);
+  box-shadow: 0 0 0 6px rgba(255, 244, 201, 0.18), 0 8px 18px -6px rgba(0,0,0,.4);
+  transition: transform 0.2s ease;
+}
+.moon-btn:hover { transform: scale(1.08) rotate(-8deg); }
+
+/* ---------- gift scene (enlarged section) ---------- */
+.gift-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+  padding: 2rem 1rem;
+  text-align: center;
+  background: #241f4a;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.92);
+  transition: opacity 0.35s ease, transform 0.35s var(--ease-soft, ease), visibility 0.35s;
+}
+/* its own blurred photo, tucked behind everything else in this section */
+.gift-scene::before {
+  content: "";
+  position: fixed;
+  inset: -6%;
+  z-index: -2;
+  background:
+    linear-gradient(180deg, rgba(20, 16, 44, 0.4), rgba(20, 16, 44, 0.58)),
+    url("../homepage.jpg") center center / cover no-repeat;
+  filter: blur(10px) saturate(1.05);
+  transform: scale(1.12);
+  pointer-events: none;
+}
+/* its own starry layer, tucked behind the scene content but above its background */
+.gift-scene .hub-stars { z-index: -1; }
+.gift-scene.open {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+.scene-stage {
+  position: relative;
+  width: min(520px, 92vw);
+  height: min(360px, 52vh);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.scene-bunny {
+  height: 62%;
+  image-rendering: auto;
+  filter: drop-shadow(0 10px 10px rgba(30,20,50,.3));
+  transform-origin: 50% 100%;
+}
+.scene-bunny.nibble { animation: nibble 0.5s ease-in-out infinite; }
+@keyframes nibble { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(-2deg); } }
+
+/* a gift photo shown big (cookie / nyc) */
+.scene-photo {
+  max-width: 92vw;
+  max-height: 100%;
+  border-radius: 16px;
+  border: 4px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 20px 40px -16px rgba(20, 15, 50, 0.55);
+}
+
+/* generic "nothing here yet" placeholder — cute cream tile, not a broken image */
+.stage-placeholder {
+  display: grid;
+  place-items: center;
+  gap: 0.5rem;
+  width: min(360px, 78vw);
+  height: min(280px, 42vh);
+  border-radius: 20px;
+  background-color: #fff8ec;
+  border: 3px dashed rgba(74, 58, 42, 0.25);
+  box-shadow: 0 16px 32px -16px rgba(20, 15, 50, 0.45);
+  font-size: 3rem;
+  text-align: center;
+  color: #4a3a2a;
+  transform: rotate(-2deg);
+}
+.stage-placeholder span {
+  font-size: 1rem;
+  font-family: var(--font-pixel);
+  opacity: 0.75;
+}
+
+/* ---------- flower photo gallery: cute rotated polaroid ---------- */
+.flower-gallery {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.polaroid {
+  position: relative;
+  background: #fffdf7;
+  padding: 14px 14px 48px;
+  border-radius: 4px;
+  box-shadow:
+    0 22px 40px -16px rgba(20, 15, 50, 0.55),
+    0 2px 0 rgba(0, 0, 0, 0.04);
+  transform: rotate(var(--tilt, -3deg));
+  transition: transform 0.35s var(--ease-soft, ease);
+}
+.polaroid::before {
+  content: "🎀";
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-6deg);
+  font-size: 1.4rem;
+  filter: drop-shadow(0 3px 3px rgba(0,0,0,.25));
+}
+.polaroid-photo {
+  width: min(300px, 70vw);
+  height: min(300px, 70vw);
+  border-radius: 2px;
+  overflow: hidden;
+  background: #e9e2d0;
+}
+.fg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.fg-nav {
+  border: none;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  cursor: pointer;
+  flex: none;
+}
+.fg-nav:hover { background: rgba(255, 255, 255, 0.28); }
+.fg-counter {
+  display: block;
+  margin-top: 0.9rem;
+  font-family: var(--font-pixel);
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+.scene-line {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  line-height: 1.5;
+  max-width: min(480px, 86vw);
+  padding: 0 1.2rem;
+  text-shadow: 0 2px 0 rgba(50,30,70,.3);
+}
+
+/* back button */
+.back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 42;
+  padding: 10px 18px;
+  border: 2px solid rgba(255,255,255,.7);
+  border-radius: 10px;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-family: var(--font-pixel);
+  font-size: 1rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.back-btn:hover { background: rgba(255,255,255,.26); }
+/* the persistent hub back button sits *below* any open overlay so it's
+   automatically hidden once a gift/note is open */
+#hub-back.hub-back {
+  z-index: 10;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* ---------- message in a bottle ---------- */
+.bottle-btn {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.7rem;
+  background: rgba(255,255,255,.16);
+  border: 2px solid rgba(255,255,255,.5);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  animation: bobble 3.5s ease-in-out infinite;
+}
+@keyframes bobble { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-7px) rotate(6deg); } }
+
+.note-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 1.4rem;
+  background: rgba(20, 16, 44, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+.note-overlay.open { opacity: 1; visibility: visible; }
+.note-card {
+  position: relative;
+  width: min(680px, 92vw);
+  max-height: min(82vh, 700px);
+  overflow-y: auto;
+  padding: 2.4rem 2.2rem 1.8rem;
+  border-radius: 14px;
+  color: #4a3a2a;
+  background: #fbf3df;
+  border: 3px solid #e6d3a8;
+  box-shadow: 0 24px 50px -18px rgba(0,0,0,.5);
+  transform: translateY(14px) scale(0.97);
+  transition: transform 0.3s var(--ease-soft, ease);
+}
+.note-overlay.open .note-card { transform: none; }
+.note-text {
+  font-family: var(--font-pixel);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  line-height: 1.75;
+  margin: 0 0 1.1rem;
+  text-align: left;
+}
+.note-sign { margin: 0.4rem 0 0; opacity: 0.7; font-size: 0.9rem; text-align: right; }
+.note-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-star, .gift-scene, .note-overlay, .bottle-btn, .hub-greeting span { animation: none !important; transition: none !important; }
+}
+
+/* page-to-page fade */
+.fade {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #10132e;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.42s ease, visibility 0.42s ease;
+}
+.fade.on { opacity: 1; visibility: visible; }
